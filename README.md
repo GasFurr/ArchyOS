@@ -42,8 +42,6 @@ ArchiOS tools help with 1-3. Nothing can help with #4.
 Also, ArchiOS philosophy is based on an idea that PC will become a niche product for experts, and so, operating systems will become a decentralized space, an art form, a hobby. Being "most intuitive" and "most backwards compatible" will not be a goal anymore, because OS is not for consumers anymore, it's for creators. Consumer WILL move to portable devices or AIO out of the box ready solutions. So our goal is not to create a grannyOS or hackerOS, it's to make a hobbyOS where operating system that is a hobby for the user. We're trying to make computing beautiful.
 Although i respect modern osdev community, i think it's too focused on creating a technodemo's like "UNIX clone in Rust" or "Microkernel on Haskell", it's cool, but there's rarely something really innovative in it.
 
-> "Move towards ideal, acknowledge the limitations, embrace the suck."
-
 ---
 
 ### Current Development Status
@@ -51,7 +49,7 @@ Although i respect modern osdev community, i think it's too focused on creating 
 ArchiOS is currently in the **Architectural Planning / Pre-Alpha phase**.
 
 - [x] Philosophy and Design Specification
-- [/] UEFI Bootloader Stub (Hello World)
+- [ ] UEFI Bootloader Stub (Hello World)
 - [ ] Archiboot Implementation...
 
 ---
@@ -124,15 +122,15 @@ Drives and partitions use a 3-character naming convention (Capital letters and n
 Almost every tech startup at this point are using the corporate "white&blue"™ aesthetic. And i don't like it.
 So i'm using my own ArchiOS "Phosphorus" color palette:
 
-160C28 - Midnight Violet
+- 160C28 - Midnight Violet
 (Void, background.)
-E01A4F - Amaranth
+- E01A4F - Amaranth
 (Error, Crash, Violation)
-FF8F1F - Amber
+- FF8F1F - Amber
 (Accent color.)
-F2F7F2 - Mint cream
+- F2F7F2 - Mint cream
 (Primary text, plain white basically.)
-247BA0 - Cerulean
+- 247BA0 - Cerulean
 (Stability, info.)
 
 Main colors are White(mint cream) and Amber. 
@@ -168,6 +166,8 @@ AI for writing docs? Sucks. But again: Generate, Understand, Refine, Rewrite. If
 Did i used AI for this readme? Yeah, in some part. But all the design choices and philosophy are purely mine, i used AI only to give all this thought a comprehensible form, to get MY work done, not to get work done FOR ME. 
 
 Using AI for code itself isn't that bad, just remember - AI can't think for you, reason for you, and debug for you. It doesn't understand the machine, it can't do differential diagnosis, it has zero intuition about emergent behaviour. You ARE smarter than AI, no matter what's your level. AI has all the data. But only YOU see the logic. AI can brainstorm with you, it can't really assemble anything coherent from this brainstorming session.
+
+> "Move towards ideal, acknowledge the limitations, embrace the suck."
 
 ---
 
