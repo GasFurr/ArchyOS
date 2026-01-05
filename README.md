@@ -69,6 +69,7 @@ ArchyOS is currently in the **Architectural Planning / Pre-Alpha phase**.
 | **Interfaces** | Typed System Calls | Rejection of byte-stream abstractions; syscalls match specific hardware data types. |
 | **Display** | Vector Surface | Direct framebuffer draw; rejection of TTY legacy for geometry-based UI. |
 | **Configuration** | First-Class TOML | System state is a static reflection of the config; eliminates side-effects. |
+| **Permissions** | Single-user desing | Multi-user design are overcomplicated and outdated, so we simplified it by making OS single-user only. |
 | **Observability** | 8-bit ActionID | Registry of 256 codes; maps every failure to a specific documentation index. |
 | **Recovery** | Archyboot Monolith | Monolithic fallback kernel; capable of re-building ARFS index and system repair. |
 | **Language** | Zig | Manual memory control, no hidden control flow, designed to be radable, perfect philosophy match. |
