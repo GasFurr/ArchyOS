@@ -167,15 +167,22 @@ Using AI for code itself isn't that bad, just remember - AI can't think for you,
 
 ---
 
-### Versioning scheme
+### Versioning & Lifecycle
 
-For Alpha stage development:
-0.YY.WW - so version published on 05.01.2026 will be 0.26.1 as it's a version from the first week of 2026.
+ArchyOS follows a dual-mode versioning strategy to balance rapid alpha iteration with stable release expectations.
 
-For Beta and Pre-release stage's classic:
-Major.Minor.Patch - so 1.0.0 is First major version, Zero minor version, Patch zero.
+1. Alpha Stage (Current): 0.YY.WW
+During the Pre-Alpha and Alpha phases, versions are time-bound to the Gregorian calendar.
+YY: The last two digits of the year (e.g., 26 for 2026).
+WW: The week number of the year (01-52).
 
----
+Example: Version 0.26.1 represents the first build of the first week of 2026.
+
+3. Beta & Release: Major.Minor.Patch
+Once the kernel reaches a "Stability Milestone" (Feature Complete), we transition to Semantic Versioning (SemVer).
+Major: Architectural shifts or breaking kernel changes.
+Minor: New features, drivers, or system utilities.
+Patch: Bug fixes and ActionID documentation updates.
 
 ### Some Q&A
 
