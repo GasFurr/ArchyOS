@@ -171,6 +171,17 @@ Using AI for code itself isn't that bad, just remember - AI can't think for you,
 
 ---
 
+### Documentation
+
+Another point about ArchiOS - we prioritize documentation as a learning tool, not a cheatsheet. Documentation should answer questions "what is" and "how to" in the most useful way. Documentation should have:
+1. Tutorials - "how to write a driver", "how to trace IPC", "how to create partitions". Just QnA for system use.
+2. Lessons - "what is IPC", "what is MMAP", "what is syscall". Explainations of elements of the system.
+3. Desctiptions - "how does MMAP structure looks?", "how IPC data struct looks?". Basically table cheatsheets for developers.
+
+The goal here is for the system to be fully described and explained using "help" command, so just by installing the system and going through "help" you can understand the system entirely, without access to the internet.
+
+---
+
 ### Legal
 
 Copyright © 2025 GasFurr. All rights reserved.
