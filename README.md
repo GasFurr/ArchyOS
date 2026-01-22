@@ -1,8 +1,7 @@
 <div align="center">
 
 # ArchyOS
-**The Desktop-Pure Computing Environment.**
-*IBM Industrial Design. Bauhaus Geometry. Zig Performance.*
+Your Personal desktop-pure computing environment.
 
 [![License: MPL v 2.0](https://img.shields.io/badge/license-MPLv2.0-orange)](https://choosealicense.com/licenses/mpl-2.0)
 ![Version](https://img.shields.io/badge/version-0.26.1--alpha-yellow)
@@ -11,36 +10,31 @@
 
 -----
 
-> **⚠️ Live Fast, Crash Harder.**
-> ArchyOS is built on a radical contract: **the kernel must never fail unexpectedly.** All crashes and fails should be directly tied to user mistakes. This stability is what makes true experimentation possible. "Live Fast" isn't about instability - it's about the freedom to modify, break, and rebuild your own space with velocity and precision, knowing the foundation beneath you is solid. Here, a crash isn't a mystery; it's a logged, traceable, and deliberate consequence. We're using `rm -rf /` as a fun starting point to build something different, and so we embrace our mistakes.
+> ** Live Fast, Crash Harder.**
+> This is an operating system for people, who think that "rm -rf /" is a fun starting point. We're building not for future, not for security, but for pure fun of bare-metal environments. It's basically modern DOS. "Fuck around and find out" is our motto. Break, rebuild, break again, system is built just for it. It will fail - but you will always understand why it did.
 
 ---
 
 ### Philosophy
 
-ArchyOS is a fundamental rethinking of the OS, built on a non-negotiable contract defined by four interlocking principles. This contract separates absolute kernel stability from sovereign user-space freedom:
+Also, ArchyOS philosophy is based on an idea that PC will become a niche product for experts, and so, operating systems will become a decentralized space, an art form, a hobby. Being "most intuitive" and "most backwards compatible" will not be a goal anymore, because OS is not for consumers anymore, it's for creators. Consumer WILL move to portable devices or AIO out of the box ready solutions. We're trying to make computing beautiful.
 
-1. **Radical Pragmatism** - Unnecessary complexity is eliminated while effective solutions are preserved. Legacy abstractions that hinder performance are removed. 
+It is not:
+- the most optimized OS.
+- the most user-friendly OS.
+- the most secure OS.
+If you want any of this:
+- Linux.
+- Windows.
+- Tails OS
+ArchyOS developers (and i hope users) are just someone who finds it funny to log into this OS once in a week and try to find new way to make computing FUN. Operating systems are the most overlooked part of IT fun purely because they are too complicated and designed as something you just use and don't touch. We are exploding this idea. This system is YOURS, not in "oh, it's modular and perfect fit for you" but in a "i can do anything" way. 
 
-2. **Hardware intimacy** - We target a 2015+ baseline (UEFI, NVMe, 64-bit multicore). Nothing past that considered "legacy" - it's just obsolete, and so it's not enabled by default or can't be supported technically. System is DESIGNED only for modern hardware.
+ArchyOS philosophical core:
 
-3. **Transparent Determinism** - System should be totally predictable and internally consistent. It's behaviour should be deducible from the rules, not statistics or complex heuristics.
-
-4. **Intent Supremacy** - User intention is the only source of legitimacy in the system, everything beyond the user's control must be absolutely stable; any error must be directly due to user error, not to internal violations.
-
-One thing should be clear our intention is not "cybersecurity" or "immutable system" or some other buzzword. Our intention is to make system transparent and understandable. If you can see through your system and understand what is happening you are more safe than if you have million dollar heuristics algorithm.
-
-Want real security?
-
-1. **Physical:** Don't let strangers use your computer
-2. **Network:** Unplug Ethernet / turn off WiFi
-3. **Software:** Don't run untrusted code
-4. **You:** Don't be stupid
-
-ArchyOS tools help with 1-3. Nothing can help with #4.
-
-Also, ArchyOS philosophy is based on an idea that PC will become a niche product for experts, and so, operating systems will become a decentralized space, an art form, a hobby. Being "most intuitive" and "most backwards compatible" will not be a goal anymore, because OS is not for consumers anymore, it's for creators. Consumer WILL move to portable devices or AIO out of the box ready solutions. So our goal is not to create a grannyOS or hackerOS, it's to make a hobbyOS where operating system that is a hobby for the user. We're trying to make computing beautiful.
-Although i respect modern osdev community, i think it's too focused on creating a technodemo's like "UNIX clone in Rust" or "Microkernel on Haskell", it's cool, but there's rarely something really innovative in it.
+1. User intent supremacy - If you wanna do something the system should not be on the way, all warnings are suggestions, not enforcement. "-i-am-an-idiot" is universal tool to do something potentially dangerous.
+2. Radical pragmatism - It's easy to lose yourself building "the most \[buzzword\]" something. Our system is made 50% of parts we think is perfect already and 50% of parts we want to make better. Build what you need - destroy what sucks.
+3. Hardware intimacy - DOS was hardware intimate and were so impactful because of it. It was hardware intimate from limitations of it's time. ArchyOS is intimate by design. We use modern technology and try to remove as much unnecessary complexity as we can for clean understanding of the system.
+4. Determinism - System should be predictable and internally consistent, only from consistency, logic, and predictability you can make fundamentally unstable environment comfortable. If something breaks - you know why, when and how to fix it. It's behaviour should be deducible from the rules, not statistics or complex heuristics.
 
 ---
 
@@ -56,65 +50,116 @@ ArchyOS is currently in the **Architectural Planning / Pre-Alpha phase**.
 
 ### Technical Details
 
-| Problem | Tech | Reasoning |
-| :--- | :--- | :--- |
-| **Scheduling** | Timer-Based (MuQSS) | Static time slices; predictable execution without heuristics or overhead. |
-| **Filesystem** | ARFS (Atomic 4MiB) | NVMe-optimized extents. Fixed-size metadata for zero-parsing/SIMD speed. |
-| **I/O Strategy** | Direct Extent Mapping | Kernel bypass; process receives LBA-pointer + Capability for direct HW access. |
-| **Small Storage** | Sub-extent Catalogs | One 4MiB extent = 1024 x 4KiB slots. High-density storage for configs and notes. |
-| **Metadata** | Self-Describing Header | First 4KiB of a file contains its identity/tags; allows re-indexing from raw disk scan. |
-| **Memory** | Child-Pointer Model | Kernel-tracked pointer lifetimes per PID; atomic reclamation on process exit. |
-| **Architecture** | Hybrid (Type-A/B) | Type-A: Isolated microkernel servers. Type-B: Statically linked high-speed modules. |
-| **Hierarchy** | AFHS (Flat Labels) | Simple 3-symbol disk labels (H:, R:, B:) and explicit mount points (home/, root/, boot/). |
-| **Interfaces** | Typed System Calls | Rejection of byte-stream abstractions; syscalls match specific hardware data types. |
-| **Display** | Vector Surface | Direct framebuffer draw; rejection of TTY legacy for geometry-based UI. |
-| **Configuration** | First-Class TOML | System state is a static reflection of the config; eliminates side-effects. |
-| **Permissions** | Single-user desing | Multi-user design are overcomplicated and outdated, so we simplified it by making OS single-user only. |
-| **Observability** | 8-bit ActionID | Registry of 256 codes; maps every failure to a specific documentation index. |
-| **Recovery** | Archyboot Monolith | Monolithic fallback kernel; capable of re-building ARFS index and system repair. |
-| **Language** | Zig | Manual memory control, no hidden control flow, designed to be radable, perfect philosophy match. |
-
-## Hybrid Kernel Design
-
-The system utilizes a microkernel core with specialized high-speed interfaces for hardware communication. Drivers are categorized by their level of integration and risk:
-
-* **Type-A Drivers:** Standard microkernel "servers." These run as isolated processes in their own memory space. They are safe, swappable, and communicate via typed system calls.
-* **Type-B Drivers:** Statically linked modules with direct hardware access. These are high-performance "blackboxes" linked at the kernel level for speed-critical paths. 
-    * **Security:** Type-B modules are considered a security threat. 
-    * **Verification:** All Type-B modules must carry a digital signature. Unsigned modules require the `--i-am-an-idiot` flag to be linked, acknowledging the risk of kernel-level instability or compromise.
+**Scheduling** - MuQSS:
+> This is about my own beliefs in system design, i deeply agree with Kon Kolivas's vision, i think that desktop-pure system should be RESPONSIVE. Static timer-based scheduling, also, provides us with predictable, deterministic runtime for applications. BFS (Braing Fuck Scheduler) is great, but not well optimized for high core counts. MuQSS is a naturall successor to BFS ideas, optimized for modern multicore environments.
+**Interfaces** - Typed System Calls
+> I really thing that "everything is a file" is outdated philosophy. I think that modern operating system should have strong typed interfaces for interaction inside the OS as it gives developer more predictable environment. Classic read() and write() can lead to unexpected behaviour, which is actively destabilizing the system. Devices should have their own interfaces optimized for themselves. Also having different strong typed system calls for different interfaces in theory should make development easier.
+**Display** - Direct-draw vector Surface
+> I personally believe in terminal supremacy, but the way modern terminals work is a dead-end. We are destroying terminal's TTY legacy, now everything in system is directly drawing on screen without terminal grid or color codes restricting it, allowing for unprecedented levels of GUI developer's freedom.
+**Configuration** - Custom declarative language Ary.
+> Ary is our Shell alternative, it's a basic scripted language that is made to be predictable and human readable by using some OOP ideas. And as well - Ary, while being imperative, makes perfect sense as a declarative configuration engine. I'll explain it better later.
+**Permissions** - Single-user design.
+> Multi-user environments are absolutely over engineered and unnecessary for modern computing. By making system single-user i remove unnecessary complexity with UID's, GID's, Permissions, etc. ArchyOS implements capablity-based security, and so, going multi-user would be a ton of unnecessary complexity for small benefits, again, we're making PERSONAL, DESKTOP-PURE system, it will not be used for servers, there's no reason to use it for servers, and so, multi-user is just unnecessary.
+**Recovery** - Archyboot subsystem.
+> While ArchyOS is actively "break stuff" system - without a way to recover the system it would be unusable. And so we introduce Archyboot - basically, basic operating system as a bootloader for ArchyOS. It is monolithic and dirty, but it's stable as a stone and has all the tools to diagnose and fix problems in ArchyOS, up to basically recompiling the kernel.
+**Language** - Zig.
+> Zig is made as a readable language. It's designed for understanding, not fast writing. With deep understanding we can allow easy fixes for most system issues just from the fact that system itself is simple, and code is made readable, with explicit memory control and without hidden allocations. It's pretty much not far from being easily translated into machine code by a human, while not having so much critical footgun's of C and C++, and being built on modern principles. Comptime, build system, everything. Zig is just a perfect philosophical and practical match, as it's really good for bare-metal environments and really good for developers.
 
 ---
 
-## AFHS (ArchyOS File Hierarchy Standard)
+### AFHS (ArchyOS File Hierarchy Standard)
 
-Storage is organized into specific root-level functional directories, mapped via disk labels.
+AFHS is our answer to unix FHS. Built clean, without legacy baggage and multi-user complexity. You can see for yourself - it is basically intuitive.
 
 ```text
-H:home/             # Sovereign user workspace
-R:secret/           # Encrypted system/user secrets
-R:drivers/          # Type-A driver binaries
-R:apps/             # User applications
-R:temp/             # Volatile scratch space
-R:config/           # Global TOML system configuration
-R:mods/             # Signed Type-B kernel modules
-R:library/          # System shared resources/blobs
-R:drive/            # Internal storage mount points
-R:mnt/              # External/Removable media mount points
-R:system/           # Core microkernel binaries
-B:boot/             # Archyboot recovery and bootloader.
+/home/                # Home directory for the user.
+/secret/              # Using capablity-based security we can make secrets visible, without making them public. This directory always needs explicit capabilites granted by user to read/write.
+/driver/             # It's our userspace drivers, more about it later in "Hybrid Kernel Design" section.
+/app/                # Intuitive - it's all the user apps.
+/app/cache/          # It's for all the app's and app installation cache.
+/temp/                # Temporary files.
+/config/              # Configuration files, including Ary configs...
+/mods/                # Source code of kernel modules. High-performance drivers. More in "Hybrid Kernel Design"...
+/mods/propreitary/    # Basically for .a library blobs, so you can publish High-performance drivers without making their code opensource. Hi MPL-2.0;
+/library/             # For all the libraries. All libraries in ArchyOS are system-wide and public.
+/mnt/                 # For mountable devices like USB's, drives, etc.
+/system/              # System files.
+/system/info/         # Local system info, "proc/" alternative, having all machine info in file form can be quite useful.
+/system/cache/        # Kernel cache.
+/system/var/          # Kernel variables.
+/system/src/          # ArchyOS source code.
+/system/kernel/       # That's where kernel binaries lives.
+/boot/                # Archyboot directory.
 ```
 
-## ARFS Disk Labels
+Our goal is ext4 filesystem, as it's basically peak filesystem for desktop, you don't need something better 90% of the times.
 
-Drives and partitions use a 3-character naming convention (Capital letters and numbers only). Because the system is desktop-focused, it supports a hard limit of 99 concurrent drives, prioritizing clarity over infinite scalability.
+---
 
-| Label | Mount point | Content |
-| --------------- | --------------- | --------------- |
-| B: | boot/ | Archyboot monolithic Fallback |
-| R: | root/ | System core, Drivers, Apps |
-| H: | home/ | Sovereign User Workspace
-| D[1-99]: | drive/ | internal storage drives |
-| M[1-99] | mnt/ | Removable media (USB/External) |
+### Hybrid Kernel Design
+
+So, that should be the hardest part yet, ArchyOS is a hybrid kernel. If i'm correct absolutely new type of hybrid kernel. What's the deal:
+We have kernel modules `mods/` and drivers `driver/`:
+
+- Modules are basically system libraries for kernel, their source code is contained in `mods/` directory. To update the kernel module you need to rebuild kernel. As ArchyOS is basically a microkernel it doesn't require much time or processing power, and so, absolutely rational. All files here are strongly standardized, each namefile has it's own purpose. It gives developer unprecedented levels of freedom.
+- Drivers are classic userspace microkernel servers and services. They have their own Interfaces to the kernel, and basically just apps as is.
+
+To swap out the kernel module for a userspace driver you just need to put `module.userspace("binaryname")` in module's `init()` function. Just straight up remove the internal logic of the library and call for userspace binary. Easy as that.
+To swap out opensource kernel module for a proprietary one you put `module.proprietary("blobname.a")` in module's `init()` function, now it links internal logic of proprietary static library straight into kernel. Nice.
+
+And so we get a monolithic kernel with microkernel capability. And we give user direct control over their kernel's logic. You can swap out colors in `video.zig` module, you can write your own GPU driver in `graphics.zig`, you can do anything, you are the god of your machine. That's the principle of ArchyOS - direct user control of the system in the most pragmatic and convenient way.
+
+---
+
+### Ary - ArchyOS shell and custom scripting language.
+
+Now something really strange - we fully change the shell paradigm. Shell syntax is now object-oriented:
+```sh
+# Let's assume we need to get the processor info from shell:
+> Archy.Info.processor
+# This command will output the processor info straight to terminal.
+> Archy.Info.processor.writeInto (clipboard)
+# This command will copy processor info into clipboard.
+# We call Archy (basically system control center) binary, and ask for a thing it can do from class Info;
+# If we just call for "processor" - it just outputs information from processor variable to the terminal.
+# Or we can ask to use method writeInto on "processor" variable, as it's a universal method for this class.
+
+# Ok, maybe we want to install an app:
+> Arpack.Package.add ("tux-race")
+# We call Arpack (Archy package manager), class Package and method add.
+# And then we pass an argument to method - "tux-race". All arguments are passed through "()" section after a method.
+> Arpack.Package.add("tux-race").Version("1.0")
+# There we need two arguments and so - we just use two argument sections. It's an installation graph in one command.
+```
+
+It's Ary shell environment and standard ArchyOS utility package. Now you don't need to know 30 different utilities to control your system - you just need to know one and classes, everything else is intuitive and have autocompletion, so you can just `tab` your way to any problem's solution. And with this shell syntax - i think you already can see how good (or bad) Ary language is:
+```sh
+#Let's do an example of packages.ary config:
+mainutil = "Arpack"
+read_direction "fromBottom-Up."
+if [package = dependency] 
+-> (Arpack.Autrocorrect.Package.moveInto(config.block.dependencies))
+
+Package.add("ArchyOS-kernel").Version("0.27.1").if [architecture = "ARM"] 
+-> (
+.discard
+text = Archy.UI.Presets.text ("No ARM in my config", warning)
+)
+Package.Add("Zig-compiler").Version("1.0.0")
+
+Ary.Block ("dependencies") 
+-> (
+# For autocorrect to place dependencies here
+)
+
+# 100x100 rectangle in pos 0x0 color white, alpha 0.
+rectangle = Archy.UI.drawRectangle ("0x0", "100x100", "255,255,255,0")
+# Will delete rectangle, then text.
+Archy.UI.delete (rectangle, text);
+```
+
+It's just an example in prototyping stage, there's no full specification yet, but vision is here.
+So, something like that..
 
 ---
 
@@ -156,11 +201,9 @@ ArchyOS development scheme can look strange:
 
 1. "dev-iter-*" branches, basically developer's playground, do whatever here, AI code, broken code, non-english comments, etc. It's just a playground, it's where ideas are born, tested and often discarded, just do whatever.
 2. "dev" branch, it's partially safe code pushed from iterations, it's purgatory for the code where we review it, rewrite it and make it main-worthy. There all AI code from iterations should be fully rewritten by human, all comments should be translated, everything here is in active code review stage.
-3. "main" branch, it's the sacred realm, there exists only stable, reviewed code. No AI code allowed here, every symbol should be written by human. All comments should be in English. No experimentation here.
+3. "main" branch, it's the sacred realm, there `exists only stable, reviewed code. No AI code allowed here, every symbol should be written by human. All comments should be in English. No experimentation here.
 
-My stance on AI code is simple: it's bad. But it's just enough to start work going. I, myself, a 16 y.o., mostly learning while i'm writing the code, and sometimes it's better to make something with AI, understand it, and then rewrite, than do nothing. But if you don't understand AI code - this code is bad by default, even if it works perfectly. AI workflow for ArchyOS is basic: Generate, Understand, Refine, Rewrite. Even if all the changes is purely cosmetic - please rewrite it by hand, i don't care if you changed nothing anyway. AI is just a statistic model, it doesn't understand what it's writing, and so, if you don't understand what AI wrote - then NOBODY on earth understands it. Be responsible about what you write.
-AI for writing docs? Sucks. But again: Generate, Understand, Refine, Rewrite. If without AI you can't explain your own code - it's a bad code. Quality control for documentation should actually be even more strict, than quality control for the code, but if it gets work done - just use standard workflow, never even try to push AI code and docs anywhere without reading it first.
-Did i used AI for this readme? Yeah, in some part. But all the design choices and philosophy are purely mine, i used AI only to give all this thought a comprehensible form, to get MY work done, not to get work done FOR ME. 
+My stance on AI code is simple: it's bad. But it's just enough to start work going. AI workflow for ArchyOS is basic: Generate, Understand, Refine, Rewrite. Even if all the changes is purely cosmetic - please rewrite it by hand, i don't care if you changed nothing anyway. AI is just a statistic model, it doesn't understand what it's writing, and so, if you don't understand what AI wrote - then NOBODY on earth understands it. Be responsible about what you write.
 
 Using AI for code itself isn't that bad, just remember - AI can't think for you, reason for you, and debug for you. It doesn't understand the machine, it can't do differential diagnosis, it has zero intuition about emergent behaviour. You ARE smarter than AI, no matter what's your level. AI has all the data. But only YOU see the logic. AI can brainstorm with you, it can't really assemble anything coherent from this brainstorming session.
 
@@ -185,43 +228,11 @@ Major: Architectural shifts or breaking kernel changes.
 Minor: New features, drivers, or system utilities.
 Patch: Bug fixes and ActionID documentation updates.
 
-### Some Q&A
-
-> Most hobby OSes fail from lack of applications. Your driver model needs to make porting software easier, not harder.
-1. About just that - ArchyOS targets to developers, exactly developer's who want to go deep, and so, it's designed to have documentation that can be used as a self-learning material, you can learn how to develop drivers for ArchyOS just by reading the docs.
-> Timer-based scheduling (MuQSS) is predictable but may waste CPU. Modern schedulers (CFS) use heuristics because they work well for unpredictable interactive workloads.
-2. CFS was made for servers, to be "fair" - read Kon Kolivas' work on BFS. I think desktop-pure system should be RESPONSIVE. Responsiveness is our first goal, and so all "heuristics" we need - is just giving priority to the focused application, to the application user uses right now, and separate thread just for the media, because media is really important in modern day, i can't see my life without music, and i hate when music starts lagging while i do a big compile.
-> "All crashes are logged and traceable" is a massive promise.
-3. Nothing complicated - just log with all system interactions. ActionID is basically a name tag for all data going through the system, every IPC, memory allocation, etc. And so opening the log you can see exact last operation, who sent it and who tried to read it. Nothing complex, theese 8 bit's are droplet in the sea, they will make close to no difference in modern hardware, but makes debugging and logging 1000x times more easier.
-> The "pure desktop" focus might lock you into x86_64 while the world fragments. What about ARM, RISC-V?
-4. It's a problem of the world, system is not tied to x86_64 - you can just go and cross-compile it, and if i ever see that desktop is moving onto other platforms - i will adapt, but for now, x86_64 is the only viable "open Architecture" system, the only Architecture where everything is swappable, standardized and is just working, most ARM projects are AIO closed-source shit, and RISC-V is too premature, i can't see future of it, i can't be sure that open Architecture will be mainstream for RISC-V and i see that hardware support for it gonna be fucking bad actually, it's not standardized, scattered and immature, that's all of it.
-> Building for the future is a massive bet.
-5. Yeah, i can't be sure that my vision is the only truth, again, i can't see future. But i believe in my vision, and either way, even if i am wrong - it's good to build something different and new in a pretty stagnant niche, and as Linus said - You should be naive to even start project as big as operating system. If my bet is wrong - i will just move on, it's not some holy war, i just want to try to build something different.
-
 ---
 
 ### Legal & Licensing
 
-ArchyOS is a multi-layered project. We use different licenses to ensure the code remains open, the knowledge remains shared, and the identity remains protected.
-
-#### 1. The Engine (Code & Logic)
-
 All source code in this repository, unless otherwise noted, is licensed under the **Mozilla Public License, v. 2.0 (MPL-2.0)**.
-
-* **Why:** It allows for "Type-B" modules to be linked without forcing a total system license change, while ensuring any improvements to the ArchyOS core are contributed back.
-* **Key Requirement:** Modifications to MPL-licensed files must be made available under the same license.
-
-#### 2. The Library (Documentation & Lessons)
-
-All documentation, tutorials, and "Lessons" are licensed under **Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)**.
-
-* **Why:** Knowledge should be a permanent resource. You can remix and share our docs, but you must credit ArchyOS and share your version under the same terms.
-
-#### 3. The Identity (Branding & Mascot)
-
-The ArchyOS name, the "Phosphorus" color palette, and the mascot **"Archy the Librarian"** are licensed under **CC BY-NC-ND 4.0**.
-
-* **Why:** You are free to share her image and promote the project, but you cannot use her for commercial purposes or modify her design without explicit permission. She is the mascot of the system, and her identity stays with the project.
 
 ---
 
