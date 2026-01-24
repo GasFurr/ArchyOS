@@ -37,7 +37,7 @@ ArchyOS philosophical core:
 1. User intent supremacy - If you wanna do something the system should not be on the way, all warnings are suggestions, not enforcement. "-i-am-an-idiot" is universal tool to do something potentially dangerous.
 2. Radical pragmatism - It's easy to lose yourself building "the most \[buzzword\]" something. Our system is made 50% of parts we think is perfect already and 50% of parts we want to make better. Build what you need - destroy what sucks.
 3. Hardware intimacy - DOS was hardware intimate and were so impactful because of it. It was hardware intimate from limitations of it's time. ArchyOS is intimate by design. We use modern technology and try to remove as much unnecessary complexity as we can for clean understanding of the system.
-4. Determinism - System should be predictable and internally consistent, only from consistency, logic, and predictability you can make fundamentally unstable environment comfortable. If something breaks - you know why, when and how to fix it. It's behaviour should be deducible from the rules, not statistics or complex heuristics.
+4. Determinism - System should be predictable and internally consistent, only from consistency, logic, and predictability you can make fundamentally unstable environment comfortable. If something breaks - you know why, when and how to fix it. System behaviour should be deducible from the rules, not statistics or complex heuristics.
 
 ---
 
