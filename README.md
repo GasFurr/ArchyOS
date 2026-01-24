@@ -23,10 +23,13 @@ It is not:
 - the most optimized OS.
 - the most user-friendly OS.
 - the most secure OS.
+
 If you want any of this:
+
 - Linux.
 - Windows.
 - Tails OS
+
 ArchyOS developers (and i hope users) are just someone who finds it funny to log into this OS once in a week and try to find new way to make computing FUN. Operating systems are the most overlooked part of IT fun purely because they are too complicated and designed as something you just use and don't touch. We are exploding this idea. This system is YOURS, not in "oh, it's modular and perfect fit for you" but in a "i can do anything" way. 
 
 ArchyOS philosophical core:
@@ -116,23 +119,24 @@ And so we get a monolithic kernel with microkernel capability. And we give user 
 Now something really strange - we fully change the shell paradigm. Shell syntax is now object-oriented:
 ```sh
 # Let's assume we need to get the processor info from shell:
-> Archy.Info.processor
+> Archy Info processor
 # This command will output the processor info straight to terminal.
-> Archy.Info.processor.writeInto (clipboard)
+> Archy Info processor writeInto "clipboard"
 # This command will copy processor info into clipboard.
 # We call Archy (basically system control center) binary, and ask for a thing it can do from class Info;
 # If we just call for "processor" - it just outputs information from processor variable to the terminal.
 # Or we can ask to use method writeInto on "processor" variable, as it's a universal method for this class.
 
 # Ok, maybe we want to install an app:
-> Arpack.Package.add ("tux-race")
+> Arpack Package add "tux-race"
 # We call Arpack (Archy package manager), class Package and method add.
 # And then we pass an argument to method - "tux-race". All arguments are passed through "()" section after a method.
-> Arpack.Package.add("tux-race").Version("1.0")
+> Arpack Package add "tux-race" version "1.0"
 # There we need two arguments and so - we just use two argument sections. It's an installation graph in one command.
 ```
 
 It's Ary shell environment and standard ArchyOS utility package. Now you don't need to know 30 different utilities to control your system - you just need to know one and classes, everything else is intuitive and have autocompletion, so you can just `tab` your way to any problem's solution. And with this shell syntax - i think you already can see how good (or bad) Ary language is:
+
 ```sh
 #Let's do an example of packages.ary config:
 mainutil = "Arpack"
@@ -158,8 +162,28 @@ rectangle = Archy.UI.drawRectangle ("0x0", "100x100", "255,255,255,0")
 Archy.UI.delete (rectangle, text);
 ```
 
-It's just an example in prototyping stage, there's no full specification yet, but vision is here.
-So, something like that..
+It's just an example in prototyping stage, there's no full specification yet, but vision is here. It's a long way until we start implementing even a little bits of this, but it sounds like a good idea.
+
+---
+
+### Memory management quirks
+
+ArchyOS doesn't have a garbage collector on kernel level as it increases complexity and makes system unpredictable. And so, our memory management approach is lifetime-based, there are the rules:
+1. First is the process. Process is owner of the pointers. Pointers are a simple layer between memory and the process.
+2. Every pointer has it's unique ID, two pointers of different process can point to one memory address if both processes have capability for this memory.
+3. Memory is free as long as there's no pointers that point to this memory.
+4. There's no dangling pointers. All pointers has their owner process, and if the process dies - pointer dies too, cleaning all the data it was pointing to (memory safety reasons)
+
+So the scheme is:
+
+ - Process -> Pointer -> Data.
+ - If pointer dies -> data dies.
+ - If process dies -> pointer dies.
+ - Process can have one pointer leading to one memory sector.
+ - Different processes can have pointers leading to one memory sector.
+ - There's no shared pointers - memory sharing is just copies of pointers.
+So if one process want to share memory with the other - it just gives it address space and a capability key for second process to create their own pointer with same capability.
+
 
 ---
 
@@ -223,7 +247,7 @@ WW: The week number of the year (01-52).
 Example: Version 0.26.1 represents the first build of the first week of 2026.
 
 3. Beta & Release: Major.Minor.Patch
-Once the kernel reaches a "Stability Milestone" (Feature Complete), we transition to Semantic Versioning (SemVer).
+Once the kernel reaches a "Stability Milestone" (Feature Complete), we transition to Semantic Versioning.
 Major: Architectural shifts or breaking kernel changes.
 Minor: New features, drivers, or system utilities.
 Patch: Bug fixes and ActionID documentation updates.
